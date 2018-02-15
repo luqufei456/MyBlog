@@ -21,17 +21,20 @@ def first(request):
     context = {'current_time': datetime.now()}
     return render(request, 'article/first.html', context)
 
-def home(request):
+def home(request, pIndex=1):
     posts = Article.objects.all() #获取全部的文章对象
     paginator = Paginator(posts, 5) #每页显示5个文章对象
-    page = request.GET.get('page')
-    try:
-        post_list = paginator.page(page)
-    except PageNotAnInteger: #如果页面不是整数，则传递第一页
-        post_list = paginator.page(1) #第一页  显示第一页
-    except EmptyPage: #如果页面超出了范围 则提交最后一页
-        post_list = paginator.page(paginator.num_pages)
-    context = {'post_list': post_list}
+    #page = request.GET.get('page')
+    #try:
+        #post_list = paginator.page(page)
+    #except PageNotAnInteger: #如果页面不是整数，则传递第一页
+        #post_list = paginator.page(1) #第一页  显示第一页
+    #except EmptyPage: #如果页面超出了范围 则提交最后一页
+        #post_list = paginator.page(paginator.num_pages)
+    pIndex = int(pIndex)
+    post_list = paginator.page(pIndex)
+    plist = paginator.page_range #总页数
+    context = {'post_list': post_list, 'plist': plist, 'pIndex': pIndex}
     return render(request, 'article/home.html', context)
 
 def detail(request, id): #每篇文章的id是唯一的
