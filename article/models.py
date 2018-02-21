@@ -9,9 +9,11 @@ class Article(models.Model):
     adate_time = models.DateTimeField(auto_now_add=True)#当对象第一次被创建时自动设置当前时间，用于创建的时间戳
     acontent = models.TextField(blank=True, null=True) #默认显示 可以为空
 
-    # 获取URL并转换成url的表示格式
+    # 获取URL并转换成url的表示格式 RSS功能
     def get_absolute_url(self):
-        path = reverse('detail', kwargs={'id': self.id}) # 这里reverse 动态链接的第一个参数是url配置里的name 然后就会根据urls里的配置动态生成链接
+        path = reverse('detail', kwargs={'id': self.id}) # 这里reverse 的第一个参数是views里的detail，然后第二个参数就是要传递给该视图的参数
+        #print(path)
+        #print('123')
         return "https://127.0.0.1:8000%s" % path
 
     def __str__(self):
